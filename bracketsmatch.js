@@ -24,7 +24,7 @@ function isBalanced(brackets) {
             "at pos",
             i,
             "expected",
-            chars[popped]
+            chars[popped],
           );
           return false;
         }

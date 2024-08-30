@@ -43,3 +43,4 @@ assert.ok(isBalanced("[{()(())}]") === true);
 assert.ok(isBalanced("[{()( 99 , ! # @ (0))}]") === true);
 assert.ok(isBalanced("[{(())(())})))]") === false);
 assert.ok(isBalanced("[{()]}") === false);
+console.log("All tests passed!");

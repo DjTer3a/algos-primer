@@ -32,3 +32,4 @@ assert.ok(parseInt(calculateSum(0)) === 1);
 assert.ok(parseInt(calculateSum(1)) === 1);
 assert.ok(parseInt(calculateSum(5)) === 13);
 assert.ok(parseInt(calculateSum(3)) === 4);
+console.log("All tests passed!");

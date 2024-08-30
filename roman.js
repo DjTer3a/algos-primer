@@ -59,3 +59,4 @@ assert.ok(main(207) === "CCVII");
 assert.ok(main(1009) === "MIX");
 assert.ok(main(1066) === "MLXVI");
 assert.ok(main(3999) === "MMMCMXCIX");
+console.log("All tests passed!");

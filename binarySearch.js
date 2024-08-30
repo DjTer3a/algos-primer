@@ -30,3 +30,4 @@ assert.ok(binarySearch(0, arr.length - 1, arr, -3) === 0);
 assert.ok(binarySearch(0, arr.length - 1, arr, 11) === 14);
 let emptyArray = [];
 assert.ok(binarySearch(0, emptyArray.length - 1, emptyArray, 1) === -1);
+console.log("All tests passed!");

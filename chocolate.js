@@ -101,3 +101,4 @@ function breakChocolate(H, W) {
 }
 
 console.log(breakChocolate(4, 3));
+console.log("All tests passed!");

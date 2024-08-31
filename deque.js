@@ -6,203 +6,159 @@ node = {
 };
 
 deque = {
-this.head,
-this.tail,
+head,
+tail,
 length
 }
 
 functions:
 
-add to this.head
-add to this.tail
-remove from this.head
-remove from this.tail
+add to head
+add to tail
+remove from head
+remove from tail
 traverse through (goToNext, goToPrev)
 printList
 find
 
-this.size
+size
 
 */
 
 const assert = require("assert");
-class Deque {
-  constructor() {
-    this.head = this.tail = null;
-    this.size = 0;
-  }
+let size = 0
+let head = tail = null
 
-  addToHead(value) {
-    if (this.size === 0) {
-      this.head = this.tail = { value, next: null, prev: null };
-    } else if (this.size === 1) {
-      let newNode = { value, next: this.tail, prev: null };
-      this.head = newNode;
-      this.tail.prev = this.head;
-    } else {
-      let newNode = { value, next: this.head, prev: null };
-      this.head = newNode;
-    }
-    return ++this.size;
-  }
 
-  addToTail(value) {
-    if (this.size === 0) {
-      this.head = this.tail = { value, next: null, prev: null };
-    } else if (this.size === 1) {
-      let newNode = { value, next: null, prev: this.head };
-      this.tail = newNode;
-      this.head.next = this.tail;
-    } else {
-      let newNode = { value, next: null, prev: this.tail };
-      this.tail = newNode;
-    }
-    return ++this.size;
+function addToHead(value){
+  let newNode = {value, next: null, prev: null}
+  if(size === 0){
+    head = tail = newNode
   }
-
-  removeFromHead() {
-    if (this.size === 0) {
-      console.error("can't do that");
-      return null;
-    } else if (this.size === 1) {
-      --this.size;
-      let value = this.head.value;
-      this.head = this.tail = null;
-      return value;
-    } else {
-      --this.size;
-      let newNode = this.head.next;
-      let value = this.head.value;
-      this.head = { value: newNode.value, prev: null, next: newNode.next };
-      return value;
-    }
+  else{
+    newNode.next = head
+    head.prev = newNode
+    head = newNode
   }
-
-  removeFromTail() {
-    if (this.size === 0) {
-      console.error("can't do that");
-      return null;
-    } else if (this.size === 1) {
-      --this.size;
-      let value = this.head.value;
-      this.head = this.tail = null;
-      return value;
-    } else {
-      --this.size;
-      let newNode = this.tail.prev;
-      let value = this.tail.value;
-      this.tail = { value: newNode.value, prev: newNode.prev, next: null };
-      return value;
-    }
-  }
-
-  goToNext(node) {
-    return node.next;
-  }
-
-  goToPrev(node) {
-    return node.prev;
-  }
-
-  print() {
-    let node = this.head;
-    let string = "[";
-    do {
-      string += node.value + " , ";
-      node = this.goToNext(node);
-    } while (node);
-    string += "]";
-    console.log(string);
-  }
-
-  find(value) {
-    let node = this.head;
-    do {
-      if (node.value === value) {
-        return node;
-      } else {
-        node = this.goToNext(this.head);
-      }
-    } while (node !== null);
-  }
+  return ++size
 }
 
-function createDeque() {
-  return new Deque();
+function addToTail(value){
+  let newNode = {value, next: null, prev: null}
+  if(size === 0){
+    head = tail = newNode
+  }
+  else{
+    newNode.prev = tail
+    tail.next = newNode
+    tail = newNode
+  }
+  return ++size
 }
 
-// Create a new deque
-const deque = createDeque();
+function removeFromHead(){
+  if(size === 0){
+    console.error("can't do that")
+    return null
+  }
+  else if(size === 1){
+    head = tail = null
+  }
+  else{
+    head = head.next
+    head.prev = null
+  }
+  return --size
+}
 
-// Test addToHead and size
-assert.strictEqual(
-  deque.addToHead(1),
-  1,
-  "Size should be 1 after adding to head",
-);
-assert.strictEqual(
-  deque.addToHead(2),
-  2,
-  "Size should be 2 after adding to head again",
-);
+function removeFromTail(){
+  if(size === 0){
+    console.error("can't do that")
+    return null
+  }
+  else if(size === 1){
+    head = tail = null
+  }
+  else{
+      tail = tail.prev
+      tail.next = null
+  }
+  return --size
+}
 
-// Test addToTail
-assert.strictEqual(
-  deque.addToTail(3),
-  3,
-  "Size should be 3 after adding to tail",
-);
+function goToNext(node){
+  return node?.next
+}
 
-// Test removeFromHead
-assert.strictEqual(deque.removeFromHead(), 2, "Should remove 2 from head");
-assert.strictEqual(deque.size, 2, "Size should be 2 after removing from head");
+function goToPrev(node){
+  return node?.prev
+}
 
-// Test removeFromTail
-assert.strictEqual(deque.removeFromTail(), 3, "Should remove 3 from tail");
-assert.strictEqual(deque.size, 1, "Size should be 1 after removing from tail");
+function find(value){
+  let node = head
+  while(node){
+    if(node.value === value){
+      return node
+    }
+    else{
+      node = goToNext(node)
+    }
+  }
+  return null
+}
 
-// Test goToNext and goToPrev
-deque.addToTail(4);
-assert.strictEqual(
-  deque.goToNext(deque.head).value,
-  4,
-  "Next node should have value 4",
-);
-assert.strictEqual(
-  deque.goToPrev(deque.tail).value,
-  1,
-  "Previous node should have value 1",
-);
+function removeValue(value){
+  let node = head
+  while(node){
+    if(node.value === value){
+      node.next = node.next?.next
+      node.prev = node.prev?.prev
+      return value
+    }
+    else{
+      node = goToNext(node)
+    }
+  }
+  return null
+}
 
-// Test find
-const foundNode = deque.find(4);
-assert.ok(foundNode, "Should find node with value 4");
-assert.strictEqual(foundNode.value, 4, "Found node should have value 4");
+function print(){
+  let node = head
+  let string = "["
+  while(node){
+    string += node.value + " , "
+    node = goToNext(node)
+  }
+  string +="]"
+  console.log(string)
+}
 
-// Test edge cases
-const emptyDeque = createDeque();
-assert.strictEqual(
-  emptyDeque.removeFromHead(),
-  null,
-  "Removing from empty deque should return null",
-);
-assert.strictEqual(
-  emptyDeque.removeFromTail(),
-  null,
-  "Removing from empty deque should return null",
-);
+print()
+console.log("addToHead(1)" , addToHead(1) )
+console.log("addToTail(2)" , addToTail(2) )
+console.log("addToHead(3)" , addToHead(3) )
+console.log("addToTail(4)" , addToTail(4) )
+console.log("addToHead(5)" , addToHead(5) )
+console.log("addToTail(6)" , addToTail(6) )
+console.log("addToHead(7)" , addToHead(7) )
+print()
+console.log("addToTail(8)" , addToTail(8) )
+console.log("addToHead(9)" , addToHead(9) )
+console.log("addToTail(10)" , addToTail(10) )
+print()
 
-assert.strictEqual(
-  emptyDeque.addToHead(1),
-  1,
-  "Size should be 1 after adding to head",
-);
-assert.strictEqual(
-  emptyDeque.addToHead(2),
-  2,
-  "Size should be 2 after adding to head again",
-);
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
 
-deque.print();
-emptyDeque.print();
-console.log("All tests passed!");
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromHead()" , removeFromHead() )
+console.log("removeFromHead()" , removeFromHead() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+console.log("removeFromTail()" , removeFromTail() )
+
+print()

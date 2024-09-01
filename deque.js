@@ -108,15 +108,32 @@ function find(value){
 }
 
 function removeValue(value){
-  let node = head
-  while(node){
-    if(node.value === value){
-      node.next = node.next?.next
-      node.prev = node.prev?.prev
-      return value
-    }
-    else{
-      node = goToNext(node)
+  if(size === 0){
+    console.log("can't do that")
+  }
+  else{
+    let node = head
+    while(node){
+      if(node.value === value){
+        if(node === head){
+          removeFromHead()
+          return value
+        }
+        else if(node === tail){
+          removeFromTail()
+          return value
+        }
+        else{
+          --size
+          node.prev.next = node.next
+          node.next.prev = node.prev
+          node = null
+          return value
+        }
+      }
+      else{
+        node = goToNext(node)
+      }
     }
   }
   return null
@@ -133,32 +150,51 @@ function print(){
   console.log(string)
 }
 
-print()
-console.log("addToHead(1)" , addToHead(1) )
-console.log("addToTail(2)" , addToTail(2) )
-console.log("addToHead(3)" , addToHead(3) )
-console.log("addToTail(4)" , addToTail(4) )
-console.log("addToHead(5)" , addToHead(5) )
-console.log("addToTail(6)" , addToTail(6) )
-console.log("addToHead(7)" , addToHead(7) )
-print()
-console.log("addToTail(8)" , addToTail(8) )
-console.log("addToHead(9)" , addToHead(9) )
-console.log("addToTail(10)" , addToTail(10) )
-print()
 
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
+// Test suite
+function runTests() {
+  // Test addToHead and addToTail
+  assert.strictEqual(addToHead(1), 1, "addToHead should return 1");
+  assert.strictEqual(addToTail(2), 2, "addToTail should return 2");
+  assert.strictEqual(addToHead(3), 3, "addToHead should return 3");
+  print()
 
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromHead()" , removeFromHead() )
-console.log("removeFromHead()" , removeFromHead() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
-console.log("removeFromTail()" , removeFromTail() )
+  // Test removeFromHead and removeFromTail
+  assert.strictEqual(removeFromHead(), 2, "removeFromHead should return 2");
+  assert.strictEqual(removeFromTail(), 1, "removeFromTail should return 1");
+  print()
 
-print()
+  // Test edge cases
+  assert.strictEqual(removeFromHead(), 0, "removeFromHead should return 0");
+  assert.strictEqual(removeFromHead(), null, "removeFromHead should return null for empty list");
+  assert.strictEqual(removeFromTail(), null, "removeFromTail should return null for empty list");
+  print()
+
+  // Test find
+  addToHead(5);
+  addToTail(10);
+  addToHead(15);
+  assert.strictEqual(find(10).value, 10, "find(10) should return node with value 10");
+  assert.strictEqual(find(20), null, "find(20) should return null");
+  print()
+
+  // Test removeValue
+  assert.strictEqual(removeValue(5), 5, "removeValue(5) should return 5");
+  assert.strictEqual(removeValue(15), 15, "removeValue(15) should return 15");
+  assert.strictEqual(removeValue(10), 10, "removeValue(10) should return 10");
+  print()
+
+  // Test traversal
+  addToHead(1);
+  addToTail(2);
+  addToTail(3);
+  let node = head;
+  assert.strictEqual(goToNext(node).value, 2, "goToNext should return node with value 2");
+  assert.strictEqual(goToPrev(tail).value, 2, "goToPrev should return node with value 2");
+  print()
+
+  console.log("cool circular refrence log: ", head)
+  console.log("All tests passed!");
+}
+
+runTests();
